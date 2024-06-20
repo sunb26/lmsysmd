@@ -1,0 +1,57 @@
+load("@aspect_bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_run_binary", "js_run_devserver")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@npm//ts/bin/lmsysmd:next/package_json.bzl", next_bin = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+next_bin.next_binary(name = "next_cli")
+
+NEXT = [
+    "next.config.mjs",
+    "package.json",
+    "postcss.config.mjs",
+    "tailwind.config.ts",
+    "tsconfig.json",
+    "//ts/bin/lmsysmd/app",
+    "//ts/bin/lmsysmd/public",
+    "//ts/bin/lmsysmd:node_modules/@types/node",
+    "//ts/bin/lmsysmd:node_modules/@types/react",
+    "//ts/bin/lmsysmd:node_modules/dotenv",
+    "//ts/bin/lmsysmd:node_modules/react-dom",
+    "//ts/bin/lmsysmd:node_modules/next",
+    "//ts/bin/lmsysmd:node_modules/typescript",
+    "//ts/env/lmsysmd",
+]
+
+next_bin.next(
+    name = "lmsysmd",
+    srcs = NEXT,
+    args = ["build"],
+    chdir = package_name(),
+    env = {"ENV": "$(execpath //ts/env/lmsysmd)"},
+    out_dirs = ["out"],
+    visibility = ["//go/cmd/lmsysmd:__pkg__"],
+)
+
+js_run_devserver(
+    name = "dev",
+    args = ["dev"],
+    chdir = package_name(),
+    data = NEXT,
+    env = {"ENV": "$(execpath //ts/env/lmsysmd)"},
+    tool = ":next_cli",
+)
+
+js_library(
+    name = "pb_lib",
+    srcs = [":pb"],
+    visibility = ["//ts/bin/lmsysmd/app:__pkg__"],
+    deps = ["//ts/bin/lmsysmd:node_modules/@bufbuild/protobuf"],
+)
+
+copy_to_directory(
+    name = "pb",
+    srcs = ["//pb:gen"],
+    root_paths = ["pb/gen/ts"],
+)

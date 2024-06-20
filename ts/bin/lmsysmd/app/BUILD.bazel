@@ -1,0 +1,19 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+
+js_library(
+    name = "app",
+    srcs = [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx",
+        "page.tsx",
+    ],
+    visibility = ["//ts/bin/lmsysmd:__pkg__"],
+    deps = [
+        "//ts/bin/lmsysmd:node_modules/dotenv",
+        "//ts/bin/lmsysmd:node_modules/next",
+        "//ts/bin/lmsysmd:node_modules/react",
+        "//ts/bin/lmsysmd:node_modules/tailwindcss",
+        "//ts/bin/lmsysmd:pb_lib",
+    ],
+)

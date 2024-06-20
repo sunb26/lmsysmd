@@ -1,0 +1,7 @@
+.DS_Store
+.env*
+!.env.vault
+/bazel-bin
+/bazel-lmsysmd
+/bazel-out
+/bazel-testlogs

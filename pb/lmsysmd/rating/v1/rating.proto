@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package lmsysmd.rating.v1;
+
+service RatingService {
+  rpc CreateRating(CreateRatingRequest) returns (CreateRatingResponse) {
+    option idempotency_level = IDEMPOTENCY_UNKNOWN;
+  }
+}
+
+message CreateRatingRequest {}
+
+message CreateRatingResponse {}
