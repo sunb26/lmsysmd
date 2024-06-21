@@ -17,7 +17,6 @@ NEXT = [
     "//ts/bin/lmsysmd/public",
     "//ts/bin/lmsysmd:node_modules/@types/node",
     "//ts/bin/lmsysmd:node_modules/@types/react",
-    "//ts/bin/lmsysmd:node_modules/dotenv",
     "//ts/bin/lmsysmd:node_modules/react-dom",
     "//ts/bin/lmsysmd:node_modules/next",
     "//ts/bin/lmsysmd:node_modules/typescript",
