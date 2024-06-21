@@ -19,9 +19,9 @@ js_library(
         "//ts/bin/lmsysmd:node_modules/@tanstack/query-sync-storage-persister",
         "//ts/bin/lmsysmd:node_modules/@tanstack/react-query",
         "//ts/bin/lmsysmd:node_modules/@tanstack/react-query-persist-client",
+        "//ts/bin/lmsysmd:node_modules/lib",
         "//ts/bin/lmsysmd:node_modules/next",
         "//ts/bin/lmsysmd:node_modules/next-themes",
         "//ts/bin/lmsysmd:node_modules/react",
-        "//ts/bin/lmsysmd:pb_lib",
     ],
 )
