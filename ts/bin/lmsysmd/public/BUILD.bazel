@@ -2,9 +2,5 @@ load("@aspect_rules_js//js:defs.bzl", "js_library")
 
 js_library(
     name = "public",
-    srcs = [
-        "next.svg",
-        "vercel.svg",
-    ],
     visibility = ["//ts/bin/lmsysmd:__pkg__"],
 )
