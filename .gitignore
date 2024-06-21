@@ -1,6 +1,6 @@
 .DS_Store
 .env*
-!.env.vault
+!.env.vault.in
 /bazel-bin
 /bazel-lmsysmd
 /bazel-out
