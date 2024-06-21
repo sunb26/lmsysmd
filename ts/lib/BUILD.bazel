@@ -16,7 +16,14 @@ npm_package(
 
 js_library(
     name = "lib_src",
-    srcs = ["package.json"],
+    srcs = [
+        "clerk/token/hook.ts",
+        "package.json",
+    ],
+    deps = [
+        "//ts/lib:node_modules/@clerk/clerk-react",
+        "//ts/lib:node_modules/@tanstack/react-query",
+    ],
 )
 
 js_library(

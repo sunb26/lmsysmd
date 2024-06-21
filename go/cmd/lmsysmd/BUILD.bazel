@@ -13,7 +13,13 @@ go_library(
     importpath = "github.com/Lev1ty/lmsysmd/cmd/lmsysmd",
     visibility = ["//visibility:private"],
     deps = [
+        "//go/cmd/lmsysmd/handler/rating",
         "//go/lib/handler/static",
+        "//go/lib/middleware/buf/validate",
+        "//go/lib/middleware/clerk",
+        "//go/pb/lmsysmd/sample/v1:sample",
+        "//go/pb/lmsysmd/sample/v1:sample_connect",
+        "@com_connectrpc_connect//:connect",
         "@com_github_dotenv_org_godotenvvault//:godotenvvault",
         "@com_github_ulule_limiter_v3//:limiter",
         "@com_github_ulule_limiter_v3//drivers/store/memory",

@@ -10,7 +10,6 @@ dotenv_vault_bin.dotenv_vault(
     ],
     chdir = package_name(),
     env = {"DOTENV_VAULT": ".env.vault.in"},
-    stamp = 1,
     visibility = [
         "//go/cmd/lmsysmd:__pkg__",
         "//prod/lmsysmd:__pkg__",

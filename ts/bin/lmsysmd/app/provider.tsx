@@ -7,6 +7,7 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 import { NextUIProvider } from "@nextui-org/react";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools/build/modern/production.js";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -22,7 +23,7 @@ export default function Provider({ children }: { children: ReactNode }) {
       >
         <NextUIProvider navigate={router.push}>
           <ThemeProvider attribute="class">
-            <ThemeDependent>{children}</ThemeDependent>
+            <ProviderDependent>{children}</ProviderDependent>
           </ThemeProvider>
         </NextUIProvider>
       </PersistQueryClientProvider>
@@ -30,7 +31,7 @@ export default function Provider({ children }: { children: ReactNode }) {
   );
 }
 
-function ThemeDependent({ children }: { children: ReactNode }) {
+function ProviderDependent({ children }: { children: ReactNode }) {
   const { resolvedTheme } = useTheme();
   return (
     <ClerkProvider
@@ -41,18 +42,14 @@ function ThemeDependent({ children }: { children: ReactNode }) {
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     >
       {children}
+      {process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === "true" && (
+        <ReactQueryDevtools />
+      )}
     </ClerkProvider>
   );
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      gcTime: Number.POSITIVE_INFINITY,
-      staleTime: Number.POSITIVE_INFINITY,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const persister = createSyncStoragePersister({
   storage: typeof window !== "undefined" ? window.localStorage : undefined,

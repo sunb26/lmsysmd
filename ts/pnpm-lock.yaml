@@ -29,15 +29,24 @@ importers:
       '@connectrpc/connect-web':
         specifier: 1.4.0
         version: 1.4.0(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.4.0)
+      '@iconify/react':
+        specifier: 5.0.1
+        version: 5.0.1(react@18.3.1)
       '@nextui-org/react':
         specifier: 2.4.2
         version: 2.4.2(@types/react@18.3.3)(framer-motion@11.2.11)(react-dom@18.3.1)(react@18.3.1)(tailwindcss@3.4.4)
+      '@nextui-org/theme':
+        specifier: 2.2.6
+        version: 2.2.6(tailwindcss@3.4.4)
       '@tanstack/query-sync-storage-persister':
         specifier: 5.45.0
         version: 5.45.0
       '@tanstack/react-query':
         specifier: 5.45.1
         version: 5.45.1(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: 5.45.1
+        version: 5.45.1(@tanstack/react-query@5.45.1)(react@18.3.1)
       '@tanstack/react-query-persist-client':
         specifier: 5.45.1
         version: 5.45.1(@tanstack/react-query@5.45.1)(react@18.3.1)
@@ -74,6 +83,9 @@ importers:
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@18.3.1)(react@18.3.1)
+      nuqs:
+        specifier: 1.17.4
+        version: 1.17.4(next@14.2.4)
       postcss:
         specifier: 8.4.38
         version: 8.4.38
@@ -89,6 +101,9 @@ importers:
       typescript:
         specifier: 5.4.5
         version: 5.4.5
+      usehooks-ts:
+        specifier: 3.1.0
+        version: 3.1.0(react@18.3.1)
 
   env:
     dependencies:
@@ -101,6 +116,12 @@ importers:
       '@bufbuild/protobuf':
         specifier: 1.10.0
         version: 1.10.0
+      '@clerk/clerk-react':
+        specifier: 5.2.5
+        version: 5.2.5(react-dom@18.3.1)(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: 5.45.1
+        version: 5.45.1(react@18.3.1)
 
 packages:
 
@@ -308,6 +329,19 @@ packages:
   /@humanwhocodes/retry@0.3.0:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
+    dev: false
+
+  /@iconify/react@5.0.1(react@18.3.1):
+    resolution: {integrity: sha512-octpAJRtHZLLS1o6fmz2Ek2Rfwx75kVg48MZyGTqL3QqoxRddEsuLqOt6ADDhRosmlrYnIrVL+7obo1bz2ikNw==}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@iconify/types': 2.0.0
+      react: 18.3.1
+    dev: false
+
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: false
 
   /@internationalized/date@3.5.4:
@@ -3064,6 +3098,10 @@ packages:
     resolution: {integrity: sha512-RVfIZQmFUTdjhSAAblvueimfngYyfN6HlwaJUPK71PKd7yi43Vs1S/rdimmZedPWX/WGppcq/U1HOj7O7FwYxw==}
     dev: false
 
+  /@tanstack/query-devtools@5.37.1:
+    resolution: {integrity: sha512-XcG4IIHIv0YQKrexTqo2zogQWR1Sz672tX2KsfE9kzB+9zhx44vRKH5si4WDILE1PIWQpStFs/NnrDQrBAUQpg==}
+    dev: false
+
   /@tanstack/query-persist-client-core@5.45.0:
     resolution: {integrity: sha512-iAETglkRB6FR1//185TcWGnMxkisJPnCrlvIhLpHzT4eKLmh4n4vq1Cys42YIJzM2il4YWf8P4refzdq4D5Vdw==}
     dependencies:
@@ -3075,6 +3113,17 @@ packages:
     dependencies:
       '@tanstack/query-core': 5.45.0
       '@tanstack/query-persist-client-core': 5.45.0
+    dev: false
+
+  /@tanstack/react-query-devtools@5.45.1(@tanstack/react-query@5.45.1)(react@18.3.1):
+    resolution: {integrity: sha512-4mrbk1g5jqlqh0pifZNsKzy7FtgeqgwzMICL4d6IJGayrrcrKq9K4N/OzRNbgRWrTn6YTY63qcAcKo+NJU2QMw==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.45.1
+      react: ^18 || ^19
+    dependencies:
+      '@tanstack/query-devtools': 5.37.1
+      '@tanstack/react-query': 5.45.1(react@18.3.1)
+      react: 18.3.1
     dev: false
 
   /@tanstack/react-query-persist-client@5.45.1(@tanstack/react-query@5.45.1)(react@18.3.1):
@@ -5362,6 +5411,10 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dev: false
 
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
+
   /mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
     dev: false
@@ -5455,6 +5508,15 @@ packages:
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /nuqs@1.17.4(next@14.2.4):
+    resolution: {integrity: sha512-wraphFfKI+Y/aWIGFsld/Ta7fTFEyeya1LkgEGNPDiMuY+Hwea/eVHBiq1GYlyMqTYSAoxRWvQyjCIo1Dy1u7g==}
+    peerDependencies:
+      next: '>=13.4 <14.0.2 || ^14.0.3'
+    dependencies:
+      mitt: 3.0.1
+      next: 14.2.4(react-dom@18.3.1)(react@18.3.1)
     dev: false
 
   /object-assign@4.1.1:
@@ -6641,6 +6703,16 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      react: 18.3.1
+    dev: false
+
+  /usehooks-ts@3.1.0(react@18.3.1):
+    resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17 || ^18
+    dependencies:
+      lodash.debounce: 4.0.8
       react: 18.3.1
     dev: false
 

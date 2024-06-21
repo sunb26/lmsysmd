@@ -11,9 +11,14 @@ run_binary(
     outs = [
         "gen/go/lmsysmd/rating/v1/rating.pb.go",
         "gen/go/lmsysmd/rating/v1/ratingv1connect/rating.connect.go",
+        "gen/go/lmsysmd/sample/v1/sample.pb.go",
+        "gen/go/lmsysmd/sample/v1/samplev1connect/sample.connect.go",
         "gen/ts/lmsysmd/rating/v1/rating-RatingService_connectquery.ts",
         "gen/ts/lmsysmd/rating/v1/rating_connect.ts",
         "gen/ts/lmsysmd/rating/v1/rating_pb.ts",
+        "gen/ts/lmsysmd/sample/v1/sample-SampleService_connectquery.ts",
+        "gen/ts/lmsysmd/sample/v1/sample_connect.ts",
+        "gen/ts/lmsysmd/sample/v1/sample_pb.ts",
     ],
     args = [
         "generate",

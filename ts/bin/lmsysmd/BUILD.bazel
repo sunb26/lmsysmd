@@ -24,6 +24,7 @@ NEXT = [
     "//ts/bin/lmsysmd/app",
     "//ts/bin/lmsysmd/public",
     "//ts/bin/lmsysmd:node_modules/@nextui-org/react",
+    "//ts/bin/lmsysmd:node_modules/@nextui-org/theme",
     "//ts/bin/lmsysmd:node_modules/@types/node",
     "//ts/bin/lmsysmd:node_modules/@types/react",
     "//ts/bin/lmsysmd:node_modules/dotenv",
