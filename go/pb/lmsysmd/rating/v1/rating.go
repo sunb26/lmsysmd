@@ -2,6 +2,7 @@ package rating
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -12,6 +13,7 @@ import (
 	ratingv1 "github.com/Lev1ty/lmsysmd/pbi/lmsysmd/rating/v1"
 	"github.com/Lev1ty/lmsysmd/pbi/lmsysmd/rating/v1/ratingv1connect"
 	"github.com/clerk/clerk-sdk-go/v2"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -44,7 +46,11 @@ func (rs *RatingService) CreateRating(
 	var rid uint32
 	if req.Msg.GetRating().GetRatingId() != 0 {
 		if err := tx.QueryRow(ctx, "INSERT INTO ratings (user_id, id, sample_id, choice_id, create_time) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, id) DO NOTHING RETURNING id", sc.Subject, req.Msg.GetRating().GetRatingId(), req.Msg.GetRating().GetSampleId(), req.Msg.GetRating().GetChoiceId(), t).Scan(&rid); err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create or get rating %d: %w", req.Msg.GetRating().GetRatingId(), err))
+			if errors.Is(err, pgx.ErrNoRows) {
+				rid = req.Msg.GetRating().GetRatingId()
+			} else {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create or get rating %d: %w", req.Msg.GetRating().GetRatingId(), err))
+			}
 		}
 	} else if err := tx.QueryRow(ctx, "INSERT INTO ratings (user_id, sample_id, choice_id, create_time) VALUES ($1, $2, $3, $4) RETURNING id", sc.Subject, req.Msg.GetRating().GetSampleId(), req.Msg.GetRating().GetChoiceId(), t).Scan(&rid); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create rating for sample %d: %w", req.Msg.GetRating().GetSampleId(), err))
