@@ -20,11 +20,11 @@ message CreateRatingResponse {}
 message Rating {
   uint32 rating_id = 1;
   uint32 sample_id = 2 [ (buf.validate.field).required = true ];
-  uint32 choice_id = 3 [ (buf.validate.field).required = true ];
+  uint32 choice_id = 3;
 }
 
 message RatingState {
-  uint32 rating_id = 1 [ (buf.validate.field).required = true ];
+  uint32 rating_id = 1;
   uint32 state_id = 2;
   enum State {
     STATE_UNSPECIFIED = 0;

@@ -1,9 +1,15 @@
 "use client";
 
-import { useSuspenseQuery } from "@connectrpc/connect-query";
+import { useMutation, useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
 import useTokenHeader from "lib/clerk/token/hook";
+import { createRating } from "lib/pb/lmsysmd/rating/v1/rating-RatingService_connectquery";
 import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
+import {
+  type CreateRatingRequest,
+  type CreateRatingResponse,
+  RatingState_State,
+} from "lib/pb/lmsysmd/rating/v1/rating_pb";
 import type {
   GetSampleRequest,
   GetSampleResponse,
@@ -25,19 +31,31 @@ export default function Rating() {
     { sampleId },
     { callOptions: { headers: tk } },
   ) as { data: GetSampleResponse };
+  const {
+    error,
+    isError,
+    mutateAsync: doCreateRating,
+  } = useMutation<CreateRatingRequest, CreateRatingResponse>(createRating, {
+    callOptions: { headers: tk },
+  });
   const router = useRouter();
   const onSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const choice = data.get(sampleId.toString())?.toString();
       if (choice === "skip") router.push("/rating");
-      else
-        router.push(
-          `/rating/id/confirm?sid=${sampleId}&cid=${choice}&ts=${new Date().getTime()}`,
-        );
+      const choiceId = choice === "nota" ? 0 : Number.parseInt(choice ?? "0");
+      const ratingCreation = doCreateRating({
+        rating: { sampleId, choiceId },
+        state: { state: RatingState_State.SUBMITTED },
+      });
+      // TODO: add sonner notification
+      await ratingCreation;
+      const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&ts=${new Date().getTime()}`;
+      router.push(href);
     },
-    [router, sampleId],
+    [doCreateRating, router, sampleId],
   );
   const { content, choices, truth } = sample as {
     content: string;
@@ -52,6 +70,8 @@ export default function Rating() {
       <Spacer y={4} />
       <RadioGroup
         classNames={{ label: "text-foreground" }}
+        errorMessage={error?.message}
+        isInvalid={isError}
         isRequired
         label={content}
         name={sampleId.toString()}
