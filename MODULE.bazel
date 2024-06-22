@@ -32,6 +32,7 @@ use_repo(
     "com_github_bufbuild_protovalidate_go",
     "com_github_clerk_clerk_sdk_go_v2",
     "com_github_dotenv_org_godotenvvault",
+    "com_github_jackc_pgx_v5",
     "com_github_klauspost_compress",
     "com_github_ulule_limiter_v3",
     "org_golang_google_protobuf",

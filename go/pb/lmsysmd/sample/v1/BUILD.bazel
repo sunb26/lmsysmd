@@ -10,6 +10,7 @@ go_library(
         ":sample_connect",
         ":sample_pb",
         "@com_connectrpc_connect//:connect",
+        "@com_github_jackc_pgx_v5//pgxpool",
     ],
 )
 
