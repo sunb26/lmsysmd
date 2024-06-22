@@ -42,7 +42,11 @@ func (rs *RatingService) CreateRating(
 	}
 	defer tx.Rollback(ctx)
 	var rid uint32
-	if err := tx.QueryRow(ctx, "INSERT INTO ratings (user_id, sample_id, choice_id, create_time) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id, sample_id, choice_id) DO NOTHING RETURNING id", sc.Subject, req.Msg.GetRating().GetSampleId(), req.Msg.GetRating().GetChoiceId(), t).Scan(&rid); err != nil {
+	if req.Msg.GetRating().GetRatingId() != 0 {
+		if err := tx.QueryRow(ctx, "INSERT INTO ratings (user_id, id, sample_id, choice_id, create_time) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, rating_id) DO NOTHING RETURNING id", sc.Subject, req.Msg.GetRating().GetRatingId(), req.Msg.GetRating().GetSampleId(), req.Msg.GetRating().GetChoiceId(), t).Scan(&rid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create or get rating %d: %w", req.Msg.GetRating().GetRatingId(), err))
+		}
+	} else if err := tx.QueryRow(ctx, "INSERT INTO ratings (user_id, sample_id, choice_id, create_time) VALUES ($1, $2, $3, $4) RETURNING id", sc.Subject, req.Msg.GetRating().GetSampleId(), req.Msg.GetRating().GetChoiceId(), t).Scan(&rid); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create rating for sample %d: %w", req.Msg.GetRating().GetSampleId(), err))
 	}
 	if _, err := tx.Exec(ctx, "INSERT INTO rating_states (user_id, rating_id, state, create_time) VALUES ($1, $2, $3, $4)", sc.Subject, rid, req.Msg.GetState().GetState(), t); err != nil {
