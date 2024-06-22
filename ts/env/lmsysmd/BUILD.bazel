@@ -2,7 +2,10 @@ load("@npm//ts/env:dotenv-vault/package_json.bzl", dotenv_vault_bin = "bin")
 
 dotenv_vault_bin.dotenv_vault(
     name = "lmsysmd",
-    srcs = [".env.vault.in"],
+    srcs = [
+        ".env.me",
+        ".env.vault.in",
+    ],
     outs = [".env.vault"],
     args = [
         "build",
