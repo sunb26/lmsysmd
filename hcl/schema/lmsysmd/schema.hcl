@@ -72,6 +72,10 @@ table "ratings" {
     null = false
     type = integer
   }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
   primary_key {
     columns = [column.user_id, column.id]
   }
@@ -108,6 +112,10 @@ table "rating_states" {
   column "state" {
     null = false
     type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
   }
   primary_key {
     columns = [column.user_id, column.rating_id, column.id]
