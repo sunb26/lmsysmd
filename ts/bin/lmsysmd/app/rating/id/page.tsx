@@ -4,12 +4,12 @@ import { useMutation, useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
 import useTokenHeader from "lib/clerk/token/hook";
 import { createRating } from "lib/pb/lmsysmd/rating/v1/rating-RatingService_connectquery";
-import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
 import {
   type CreateRatingRequest,
   type CreateRatingResponse,
   RatingState_State,
 } from "lib/pb/lmsysmd/rating/v1/rating_pb";
+import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
 import type {
   GetSampleRequest,
   GetSampleResponse,
