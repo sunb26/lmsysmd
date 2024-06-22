@@ -33,6 +33,7 @@ js_library(
         "//ts/bin/lmsysmd:node_modules/next-themes",
         "//ts/bin/lmsysmd:node_modules/nuqs",
         "//ts/bin/lmsysmd:node_modules/react",
+        "//ts/bin/lmsysmd:node_modules/sonner",
         "//ts/bin/lmsysmd:node_modules/usehooks-ts",
     ],
 )

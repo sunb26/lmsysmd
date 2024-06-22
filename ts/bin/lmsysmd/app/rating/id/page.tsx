@@ -18,6 +18,7 @@ import type {
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { type FormEvent, useCallback } from "react";
+import { toast } from "sonner";
 
 export default function Rating() {
   const [id, _setId] = useQueryState("id");
@@ -50,7 +51,12 @@ export default function Rating() {
         rating: { sampleId, choiceId },
         state: { state: RatingState_State.SUBMITTED },
       });
-      // TODO: add sonner notification
+      toast.promise(createRatingResponse, {
+        loading: "Submitting Rating...",
+        success: ({ ratingId }: CreateRatingResponse) =>
+          `Created Rating #${ratingId}.`,
+        error: "Failed to create rating.",
+      });
       const { ratingId } = await createRatingResponse;
       const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&rid=${ratingId}&ts=${new Date().getTime()}`;
       router.push(href);

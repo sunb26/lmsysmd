@@ -18,6 +18,7 @@ import type {
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { type FormEvent, useCallback, useEffect } from "react";
+import { toast } from "sonner";
 import { useCountdown } from "usehooks-ts";
 
 export default function Confirm() {
@@ -67,7 +68,12 @@ export default function Confirm() {
         rating: { sampleId, choiceId, ratingId },
         state: { state: RatingState_State.CONFIRMED },
       });
-      // TODO: add sonner notification
+      toast.promise(createRatingResponse, {
+        loading: "Confirming Rating...",
+        success: ({ ratingId }: CreateRatingResponse) =>
+          `Confirmed Rating #${ratingId}.`,
+        error: "Failed to confirm rating.",
+      });
       await createRatingResponse;
       router.push(`/rating?ts=${new Date().getTime()}`);
     },
@@ -102,7 +108,7 @@ export default function Confirm() {
       <Spacer y={4} />
       <div className="flex flex-row gap-2">
         <Button color="primary" fullWidth isLoading={count > 0} type="submit">
-          Confirm&nbsp;Rating&nbsp;{!!count && `(${count})`}
+          Confirm&nbsp;{!!count && `(${count})`}
         </Button>
         <Button fullWidth onPress={onPress}>
           Go&nbsp;Back
