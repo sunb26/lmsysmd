@@ -2,7 +2,6 @@
 
 import { useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
 import useTokenHeader from "lib/clerk/token/hook";
 import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
 import type {
