@@ -12,6 +12,7 @@ go_library(
         "//go/lib/context/value",
         "@com_connectrpc_connect//:connect",
         "@com_github_clerk_clerk_sdk_go_v2//:clerk-sdk-go",
+        "@com_github_jackc_pgx_v5//:pgx",
         "@com_github_jackc_pgx_v5//pgxpool",
     ],
 )
