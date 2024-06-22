@@ -46,13 +46,13 @@ export default function Rating() {
       const choice = data.get(sampleId.toString())?.toString();
       if (choice === "skip") router.push("/rating");
       const choiceId = choice === "nota" ? 0 : Number.parseInt(choice ?? "0");
-      const ratingCreation = doCreateRating({
+      const createRatingResponse = doCreateRating({
         rating: { sampleId, choiceId },
         state: { state: RatingState_State.SUBMITTED },
       });
       // TODO: add sonner notification
-      await ratingCreation;
-      const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&ts=${new Date().getTime()}`;
+      const { ratingId } = await createRatingResponse;
+      const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&rid=${ratingId}&ts=${new Date().getTime()}`;
       router.push(href);
     },
     [doCreateRating, router, sampleId],

@@ -1,8 +1,14 @@
 "use client";
 
-import { useSuspenseQuery } from "@connectrpc/connect-query";
+import { useMutation, useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
 import useTokenHeader from "lib/clerk/token/hook";
+import { createRating } from "lib/pb/lmsysmd/rating/v1/rating-RatingService_connectquery";
+import {
+  type CreateRatingRequest,
+  type CreateRatingResponse,
+  RatingState_State,
+} from "lib/pb/lmsysmd/rating/v1/rating_pb";
 import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
 import type {
   GetSampleRequest,
@@ -15,11 +21,13 @@ import { type FormEvent, useCallback, useEffect } from "react";
 import { useCountdown } from "usehooks-ts";
 
 export default function Confirm() {
-  const [sid, _setSampleId] = useQueryState("sid");
+  const [sid, _setSid] = useQueryState("sid");
   if (!sid) throw new Promise((r) => setTimeout(r, 100));
   const sampleId = Number.parseInt(sid);
-  const [choiceId, _setChoiceId] = useQueryState("cid");
-  if (!choiceId) throw new Promise((r) => setTimeout(r, 100));
+  const [cid, _setCid] = useQueryState("cid");
+  if (!cid) throw new Promise((r) => setTimeout(r, 100));
+  const [rid, _setRid] = useQueryState("rid");
+  if (!rid) throw new Promise((r) => setTimeout(r, 100));
   const tk = useTokenHeader();
   const {
     data: { sample },
@@ -33,6 +41,13 @@ export default function Confirm() {
     choices: Sample_Choice[];
     truth: string;
   };
+  const {
+    error,
+    isError,
+    mutateAsync: doCreateRating,
+  } = useMutation<CreateRatingRequest, CreateRatingResponse>(createRating, {
+    callOptions: { headers: tk },
+  });
   const [count, { startCountdown }] = useCountdown({
     countStart: 3,
     intervalMs: 1000,
@@ -42,14 +57,21 @@ export default function Confirm() {
   }, [startCountdown]);
   const router = useRouter();
   const onSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const choice = data.get(sampleId.toString())?.toString();
-      console.log(choice);
+      const choiceId = choice === "nota" ? 0 : Number.parseInt(choice ?? "0");
+      const ratingId = Number.parseInt(rid);
+      const createRatingResponse = doCreateRating({
+        rating: { sampleId, choiceId, ratingId },
+        state: { state: RatingState_State.CONFIRMED },
+      });
+      // TODO: add sonner notification
+      await createRatingResponse;
       router.push(`/rating?ts=${new Date().getTime()}`);
     },
-    [router, sampleId],
+    [doCreateRating, rid, router, sampleId],
   );
   const onPress = useCallback(() => {
     router.back();
@@ -62,10 +84,12 @@ export default function Confirm() {
       <Spacer y={4} />
       <RadioGroup
         classNames={{ label: "text-foreground" }}
+        errorMessage={error?.message}
+        isInvalid={isError}
         isReadOnly
         label={content}
         name={sampleId.toString()}
-        value={choiceId}
+        value={cid}
       >
         {choices.map(({ choiceId, content }: Sample_Choice, index) => (
           <Radio key={choiceId} value={choiceId.toString()}>

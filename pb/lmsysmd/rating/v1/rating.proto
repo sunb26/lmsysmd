@@ -15,7 +15,9 @@ message CreateRatingRequest {
   RatingState state = 2 [ (buf.validate.field).required = true ];
 }
 
-message CreateRatingResponse {}
+message CreateRatingResponse {
+  uint32 rating_id = 1 [ (buf.validate.field).required = true ];
+}
 
 message Rating {
   uint32 rating_id = 1;

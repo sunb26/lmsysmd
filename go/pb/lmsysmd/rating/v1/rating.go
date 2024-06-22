@@ -55,5 +55,5 @@ func (rs *RatingService) CreateRating(
 	if err := tx.Commit(ctx); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("commit tx: %w", err))
 	}
-	return connect.NewResponse(&ratingv1.CreateRatingResponse{}), nil
+	return connect.NewResponse(&ratingv1.CreateRatingResponse{RatingId: rid}), nil
 }
