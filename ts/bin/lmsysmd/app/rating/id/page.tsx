@@ -93,7 +93,7 @@ export default function Rating() {
       </RadioGroup>
       <Spacer y={4} />
       <Button color="primary" fullWidth type="submit">
-        Submit Rating
+        Submit&nbsp;Rating
       </Button>
     </form>
   );
