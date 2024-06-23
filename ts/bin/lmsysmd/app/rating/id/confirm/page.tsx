@@ -119,7 +119,6 @@ export default function Confirm() {
             {content}
           </Radio>
         ))}
-        <Radio value="nota">None of the above</Radio>
         <Radio value="skip">Skip</Radio>
       </RadioGroup>
       <Spacer y={4} />
