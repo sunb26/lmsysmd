@@ -115,7 +115,8 @@ export default function Confirm() {
       >
         {choices.map(({ choiceId, content }: Sample_Choice, index) => (
           <Radio key={choiceId} value={choiceId.toString()}>
-            {content !== "None of the above" && index + 1}.&nbsp;{content}
+            {content !== "None of the above" && `${index + 1}. `}
+            {content}
           </Radio>
         ))}
         <Radio value="nota">None of the above</Radio>
