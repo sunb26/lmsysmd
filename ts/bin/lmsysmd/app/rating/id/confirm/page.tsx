@@ -67,10 +67,6 @@ export default function Confirm() {
         toast.error("No choice selected.");
         return;
       }
-      if (choice === "nota") {
-        toast.warning("`None of the above` is currently under development.");
-        return;
-      }
       const choiceId = Number.parseInt(choice);
       const ratingId = Number.parseInt(rid);
       const createRatingResponse = doCreateRating({

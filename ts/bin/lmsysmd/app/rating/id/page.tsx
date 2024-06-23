@@ -50,7 +50,10 @@ export default function Rating() {
         toast.error("No choice selected.");
         return;
       }
-      if (choice === "skip") router.push("/rating");
+      if (choice === "skip") {
+        router.push("/rating");
+        return;
+      }
       const choiceId = Number.parseInt(choice);
       const createRatingResponse = doCreateRating({
         rating: { sampleId, choiceId },
