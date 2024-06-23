@@ -50,10 +50,6 @@ export default function Rating() {
         toast.error("No choice selected.");
         return;
       }
-      if (choice === "nota") {
-        toast.warning("`None of the above` is currently under development.");
-        return;
-      }
       if (choice === "skip") router.push("/rating");
       const choiceId = Number.parseInt(choice);
       const createRatingResponse = doCreateRating({
@@ -101,10 +97,9 @@ export default function Rating() {
       >
         {choices.map(({ choiceId, content }: Sample_Choice, index) => (
           <Radio key={choiceId} value={choiceId.toString()}>
-            {index + 1}.&nbsp;{content}
+            {content !== "None of the above" && index + 1}.&nbsp;{content}
           </Radio>
         ))}
-        <Radio value="nota">None of the above</Radio>
         <Radio value="skip">Skip</Radio>
       </RadioGroup>
       <Spacer y={4} />
