@@ -88,7 +88,7 @@ export default function Confirm() {
       } catch (err) {
         const e = ConnectError.from(err);
         if (e.code === Code.Unauthenticated)
-          router.push(process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL ?? "/");
+          router.push(`/rating?ts=${new Date().getTime()}`);
         else toast.error(`Something went wrong: ${e.message}.`);
       }
       router.push(`/rating?ts=${new Date().getTime()}`);

@@ -19,7 +19,7 @@ export default function User() {
           className="font-sans"
           as={Link}
           color="primary"
-          href={`/passages?ts=${new Date().getTime()}`}
+          href={`/rating?ts=${new Date().getTime()}`}
           radius="full"
         >
           Sign&nbsp;In
