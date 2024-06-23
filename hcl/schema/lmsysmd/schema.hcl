@@ -19,8 +19,21 @@ table "samples" {
     null = false
     type = timestamptz
   }
+  column "sampleset_id" {
+    null = true
+    type = integer
+  }
   primary_key {
     columns = [column.id]
+  }
+  index "samples_sampleset_id_id" {
+    columns = [column.sampleset_id, column.id]
+  }
+  foreign_key "samples_sampleset_id" {
+    columns = [column.sampleset_id]
+    ref_columns = [table.samplesets.column.id]
+    on_update = CASCADE
+    on_delete = CASCADE
   }
 }
 table "sample_choices" {
@@ -125,5 +138,103 @@ table "rating_states" {
     ref_columns = [table.ratings.column.id]
     on_update = CASCADE
     on_delete = CASCADE
+  }
+}
+table "samplesets" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
+  column "model_id" {
+    null = false
+    type = text
+  }
+  column "task_id" {
+    null = false
+    type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  foreign_key "samplesets_model_id" {
+    columns = [column.model_id]
+    ref_columns = [table.models.column.id]
+    on_update = CASCADE
+    on_delete = RESTRICT
+  }
+  foreign_key "samplesets_task_id" {
+    columns = [column.task_id]
+    ref_columns = [table.tasks.column.id]
+    on_update = CASCADE
+    on_delete = RESTRICT
+  }
+}
+table "models" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = text
+  }
+  column "display_name" {
+    null = false
+    type = text
+  }
+  column "release_date" {
+    null = false
+    type = timestamptz
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  column "vendor_id" {
+    null = false
+    type = text
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  foreign_key "models_vendor_id" {
+    columns = [column.vendor_id]
+    ref_columns = [table.model_vendors.column.id]
+    on_update = CASCADE
+    on_delete = RESTRICT
+  }
+}
+table "model_vendors" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.id]
+  }
+}
+table "tasks" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = text
+  }
+  column "display_name" {
+    null = false
+    type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.id]
   }
 }
