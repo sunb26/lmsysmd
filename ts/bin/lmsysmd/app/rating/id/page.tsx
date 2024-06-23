@@ -46,8 +46,16 @@ export default function Rating() {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const choice = data.get(sampleId.toString())?.toString();
+      if (!choice) {
+        toast.error("No choice selected.");
+        return;
+      }
+      if (choice === "nota") {
+        toast.warning("`None of the above` is currently under development.");
+        return;
+      }
       if (choice === "skip") router.push("/rating");
-      const choiceId = choice === "nota" ? 0 : Number.parseInt(choice ?? "0");
+      const choiceId = Number.parseInt(choice);
       const createRatingResponse = doCreateRating({
         rating: { sampleId, choiceId },
         state: { state: RatingState_State.SUBMITTED },

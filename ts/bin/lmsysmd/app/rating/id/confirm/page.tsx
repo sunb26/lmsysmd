@@ -63,7 +63,15 @@ export default function Confirm() {
       e.preventDefault();
       const data = new FormData(e.currentTarget);
       const choice = data.get(sampleId.toString())?.toString();
-      const choiceId = choice === "nota" ? 0 : Number.parseInt(choice ?? "0");
+      if (!choice) {
+        toast.error("No choice selected.");
+        return;
+      }
+      if (choice === "nota") {
+        toast.warning("`None of the above` is currently under development.");
+        return;
+      }
+      const choiceId = Number.parseInt(choice);
       const ratingId = Number.parseInt(rid);
       const createRatingResponse = doCreateRating({
         rating: { sampleId, choiceId, ratingId },
