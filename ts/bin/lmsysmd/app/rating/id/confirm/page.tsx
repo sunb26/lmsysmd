@@ -11,10 +11,11 @@ import {
   RatingState_State,
 } from "lib/pb/lmsysmd/rating/v1/rating_pb";
 import { getSample } from "lib/pb/lmsysmd/sample/v1/sample-SampleService_connectquery";
-import type {
-  GetSampleRequest,
-  GetSampleResponse,
-  Sample_Choice,
+import {
+  type GetSampleRequest,
+  type GetSampleResponse,
+  type Sample_Choice,
+  Sample_Choice_ContentCommon,
 } from "lib/pb/lmsysmd/sample/v1/sample_pb";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
@@ -111,8 +112,12 @@ export default function Confirm() {
       >
         {choices.map(({ choiceId, content }: Sample_Choice, index) => (
           <Radio key={choiceId} value={choiceId.toString()}>
-            {content !== "None of the above" && `${index + 1}. `}
-            {content}
+            {content?.value !== Sample_Choice_ContentCommon.NONE_OF_THE_ABOVE &&
+              `${index + 1}. `}
+            {content?.value !== Sample_Choice_ContentCommon.NONE_OF_THE_ABOVE &&
+              content?.value}
+            {content?.value === Sample_Choice_ContentCommon.NONE_OF_THE_ABOVE &&
+              "None of the above"}
           </Radio>
         ))}
         <Radio value="skip">Skip</Radio>
