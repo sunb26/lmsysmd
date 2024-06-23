@@ -23,6 +23,7 @@ js_library(
     deps = [
         "//ts/bin/lmsysmd:node_modules/@clerk/clerk-react",
         "//ts/bin/lmsysmd:node_modules/@clerk/themes",
+        "//ts/bin/lmsysmd:node_modules/@connectrpc/connect",
         "//ts/bin/lmsysmd:node_modules/@connectrpc/connect-query",
         "//ts/bin/lmsysmd:node_modules/@connectrpc/connect-web",
         "//ts/bin/lmsysmd:node_modules/@iconify/react",

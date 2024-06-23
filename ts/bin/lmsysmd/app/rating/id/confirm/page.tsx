@@ -1,5 +1,6 @@
 "use client";
 
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useMutation, useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
 import useTokenHeader from "lib/clerk/token/hook";
@@ -72,9 +73,16 @@ export default function Confirm() {
         loading: "Confirming Rating...",
         success: ({ ratingId }: CreateRatingResponse) =>
           `Confirmed Rating #${ratingId}.`,
-        error: "Failed to confirm rating.",
+        error: (e: ConnectError) => `Failed to confirm rating: ${e.message}.`,
       });
-      await createRatingResponse;
+      try {
+        await createRatingResponse;
+      } catch (err) {
+        const e = ConnectError.from(err);
+        if (e.code === Code.Unauthenticated)
+          router.push(process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL ?? "/");
+        else toast.error(`Something went wrong: ${e.message}.`);
+      }
       router.push(`/rating?ts=${new Date().getTime()}`);
     },
     [doCreateRating, rid, router, sampleId],

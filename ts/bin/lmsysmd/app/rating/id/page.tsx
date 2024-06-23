@@ -1,5 +1,6 @@
 "use client";
 
+import { Code, ConnectError } from "@connectrpc/connect";
 import { useMutation, useSuspenseQuery } from "@connectrpc/connect-query";
 import { Button, Radio, RadioGroup, Spacer } from "@nextui-org/react";
 import useTokenHeader from "lib/clerk/token/hook";
@@ -55,11 +56,18 @@ export default function Rating() {
         loading: "Submitting Rating...",
         success: ({ ratingId }: CreateRatingResponse) =>
           `Created Rating #${ratingId}.`,
-        error: "Failed to create rating.",
+        error: (e: ConnectError) => `Failed to create rating: ${e.message}.`,
       });
-      const { ratingId } = await createRatingResponse;
-      const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&rid=${ratingId}&ts=${new Date().getTime()}`;
-      router.push(href);
+      try {
+        const { ratingId } = await createRatingResponse;
+        const href = `/rating/id/confirm?sid=${sampleId}&cid=${choice}&rid=${ratingId}&ts=${new Date().getTime()}`;
+        router.push(href);
+      } catch (err) {
+        const e = ConnectError.from(err);
+        if (e.code === Code.Unauthenticated)
+          router.push(process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL ?? "/");
+        else toast.error(`Something went wrong: ${e.message}.`);
+      }
     },
     [doCreateRating, router, sampleId],
   );

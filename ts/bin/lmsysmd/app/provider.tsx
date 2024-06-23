@@ -6,13 +6,13 @@ import { TransportProvider } from "@connectrpc/connect-query";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { NextUIProvider } from "@nextui-org/react";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools/build/modern/production.js";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 
 export default function Provider({ children }: { children: ReactNode }) {
   const router = useRouter();
