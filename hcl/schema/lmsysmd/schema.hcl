@@ -12,11 +12,11 @@ table "samples" {
     type = timestamptz
   }
   column "sampleset_id" {
-    null = true
+    null = false
     type = integer
   }
   column "case_id" {
-    null = true
+    null = false
     type = integer
   }
   primary_key {
