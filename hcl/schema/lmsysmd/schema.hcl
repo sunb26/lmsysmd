@@ -218,27 +218,35 @@ table "models" {
     null = false
     type = timestamptz
   }
+  column "canonical_url" {
+    null = false
+    type = text
+  }
   column "create_time" {
     null = false
     type = timestamptz
   }
-  column "vendor_id" {
+  column "provider_id" {
     null = false
     type = text
   }
   primary_key {
     columns = [column.id]
   }
-  foreign_key "models_vendor_id" {
-    columns = [column.vendor_id]
-    ref_columns = [table.model_vendors.column.id]
+  foreign_key "models_provider_id" {
+    columns = [column.provider_id]
+    ref_columns = [table.model_providers.column.id]
     on_update = CASCADE
     on_delete = RESTRICT
   }
 }
-table "model_vendors" {
+table "model_providers" {
   schema = schema.public
   column "id" {
+    null = false
+    type = text
+  }
+  column "canonical_url" {
     null = false
     type = text
   }
@@ -299,6 +307,34 @@ table "cases" {
   foreign_key "cases_caseset_id" {
     columns = [column.caseset_id]
     ref_columns = [table.casesets.column.id]
+    on_update = CASCADE
+    on_delete = CASCADE
+  }
+}
+table "case_labels" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
+  column "case_id" {
+    null = false
+    type = integer
+  }
+  column "label" {
+    null = false
+    type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.case_id, column.id]
+  }
+  foreign_key "case_labels_case_id" {
+    columns = [column.case_id]
+    ref_columns = [table.cases.column.id]
     on_update = CASCADE
     on_delete = CASCADE
   }
