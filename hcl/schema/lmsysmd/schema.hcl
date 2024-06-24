@@ -7,14 +7,6 @@ table "samples" {
     null = false
     type = serial
   }
-  column "content" {
-    null = false
-    type = text
-  }
-  column "truth" {
-    null = false
-    type = text
-  }
   column "create_time" {
     null = false
     type = timestamptz
@@ -188,6 +180,10 @@ table "experiments" {
     null = false
     type = text
   }
+  column "user_instruction" {
+    null = false
+    type = text
+  }
   column "create_time" {
     null = false
     type = timestamptz
@@ -289,6 +285,10 @@ table "cases" {
   column "create_time" {
     null = false
     type = timestamptz
+  }
+  column "truth" {
+    null = false
+    type = text
   }
   primary_key {
     columns = [column.caseset_id, column.id]
