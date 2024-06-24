@@ -23,6 +23,10 @@ table "samples" {
     null = true
     type = integer
   }
+  column "case_id" {
+    null = true
+    type = integer
+  }
   primary_key {
     columns = [column.id]
   }
@@ -34,6 +38,12 @@ table "samples" {
     ref_columns = [table.samplesets.column.id]
     on_update = CASCADE
     on_delete = CASCADE
+  }
+  foreign_key "samples_case_id" {
+    columns = [column.case_id]
+    ref_columns = [table.cases.column.id]
+    on_update = CASCADE
+    on_delete = RESTRICT
   }
 }
 table "sample_choices" {
@@ -146,11 +156,35 @@ table "samplesets" {
     null = false
     type = serial
   }
+  column "experiment_id" {
+    null = false
+    type = integer
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  foreign_key "samplesets_experiment_id" {
+    columns = [column.experiment_id]
+    ref_columns = [table.experiments.column.id]
+    on_update = CASCADE
+    on_delete = RESTRICT
+  }
+}
+table "experiments" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
   column "model_id" {
     null = false
     type = text
   }
-  column "task_id" {
+  column "prompt_id" {
     null = false
     type = text
   }
@@ -161,15 +195,15 @@ table "samplesets" {
   primary_key {
     columns = [column.id]
   }
-  foreign_key "samplesets_model_id" {
+  foreign_key "experiments_model_id" {
     columns = [column.model_id]
     ref_columns = [table.models.column.id]
     on_update = CASCADE
     on_delete = RESTRICT
   }
-  foreign_key "samplesets_task_id" {
-    columns = [column.task_id]
-    ref_columns = [table.tasks.column.id]
+  foreign_key "experiments_prompt_id" {
+    columns = [column.prompt_id]
+    ref_columns = [table.prompts.column.id]
     on_update = CASCADE
     on_delete = RESTRICT
   }
@@ -220,15 +254,60 @@ table "model_vendors" {
     columns = [column.id]
   }
 }
-table "tasks" {
+table "prompts" {
   schema = schema.public
   column "id" {
     null = false
     type = text
   }
-  column "display_name" {
+  column "content" {
     null = false
-    type = text
+    type = jsonb
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.id]
+  }
+}
+table "cases" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
+  column "caseset_id" {
+    null = false
+    type = integer
+  }
+  column "content" {
+    null = false
+    type = jsonb
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.caseset_id, column.id]
+  }
+  unique "cases_id" {
+    columns = [column.id]
+  }
+  foreign_key "cases_caseset_id" {
+    columns = [column.caseset_id]
+    ref_columns = [table.casesets.column.id]
+    on_update = CASCADE
+    on_delete = CASCADE
+  }
+}
+table "casesets" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
   }
   column "create_time" {
     null = false
