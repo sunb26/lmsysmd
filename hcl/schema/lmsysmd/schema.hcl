@@ -353,3 +353,31 @@ table "casesets" {
     columns = [column.id]
   }
 }
+table "rating_labels" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
+  column "rating_id" {
+    null = false
+    type = integer
+  }
+  column "label" {
+    null = false
+    type = text
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  primary_key {
+    columns = [column.rating_id, column.id]
+  }
+  foreign_key "rating_labels_rating_id" {
+    columns = [column.rating_id]
+    ref_columns = [table.ratings.column.id]
+    on_update = CASCADE
+    on_delete = CASCADE
+  }
+}
