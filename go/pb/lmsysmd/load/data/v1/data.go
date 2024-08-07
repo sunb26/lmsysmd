@@ -142,7 +142,7 @@ func (ds *DataService) BatchCreateData(
 		if len(row) != spreadsheetColumnCount {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("invalid row: row does not have %d columns on row %d", spreadsheetColumnCount, i+2))
 		}
-		// Type assert the values from the google sheet
+		// Type assert the values cell-by-cell from the google sheet.
 		exp, ok := row[0].(string)
 		if !ok {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("invalid exp id: id not a string on row %d", i+2))
@@ -159,11 +159,11 @@ func (ds *DataService) BatchCreateData(
 		if !ok {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("invalid case category: category not a string on row %d", i+2))
 		}
-		strCaseId, ok := row[3].(string)
+		strCasesetId, ok := row[3].(string)
 		if !ok {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("invalid case id: id not a string on row %d", i+2))
 		}
-		caseId, err := strconv.ParseUint(strCaseId, 10, 32)
+		casesetId, err := strconv.ParseUint(strCasesetId, 10, 32)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("convert case id string to uint: %w", err))
 		}
@@ -226,7 +226,7 @@ func (ds *DataService) BatchCreateData(
 			ExperimentId:     uint32(expId),
 			ModelId:          modelId,
 			CaseCategory:     category,
-			CaseId:           uint32(caseId),
+			CasesetId:        uint32(casesetId),
 			GroundTruth:      truth,
 			Prompt:           prompt,
 			CaseInputType:    caseInputType,
@@ -242,23 +242,23 @@ func (ds *DataService) BatchCreateData(
 
 		// Insert into database
 
-		// 1. Create Caseset - return id
-		if _, err := tx.Exec(ctx, "INSERT INTO casesets (id, create_time) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING", dataMsg.CaseId, t); err != nil {
+		// 1. Create Caseset
+		if _, err := tx.Exec(ctx, "INSERT INTO casesets (id, create_time) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING", dataMsg.CasesetId, t); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create caseset: %w", err))
 		}
 
 		// 2. Create Case
 		var cid uint32
 		content := map[string]interface{}{"messages": []map[string]string{{"role": "user", "content": dataMsg.CaseInputContent}}}
-		if err := tx.QueryRow(ctx, "INSERT INTO cases (caseset_id, content, create_time, truth) VALUES ($1, $2, $3, $4) RETURNING id", dataMsg.CaseId, content, t, dataMsg.GroundTruth).Scan(&cid); err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create case for caseset %d: %w", dataMsg.CaseId, err))
+		if err := tx.QueryRow(ctx, "INSERT INTO cases (caseset_id, content, create_time, truth) VALUES ($1, $2, $3, $4) RETURNING id", dataMsg.CasesetId, content, t, dataMsg.GroundTruth).Scan(&cid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create case for caseset %d: %w", dataMsg.CasesetId, err))
 		}
 
 		// 3. Create Prompt
 		var promptId string
 		promptContent := map[string]interface{}{"messages": []map[string]string{{"role": "system", "content": dataMsg.Prompt}}}
 		if err := tx.QueryRow(ctx, "INSERT INTO prompts (content, create_time) VALUES ($1, $2) RETURNING id", promptContent, t).Scan(&promptId); err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create prompt for caseset %d: %w", dataMsg.CaseId, err))
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("create prompt for caseset %d: %w", dataMsg.CasesetId, err))
 		}
 	}
 
