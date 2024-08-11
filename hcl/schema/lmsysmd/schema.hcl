@@ -1,6 +1,21 @@
 schema "public" {
   comment = "standard public schema"
 }
+table "google_sheet_revisions" {
+  schema = schema.public
+  column "id" {
+    null = false
+    type = serial
+  }
+  column "create_time" {
+    null = false
+    type = timestamptz
+  }
+  column "revision_id" {
+    null = false
+    type = text
+  }
+}
 table "samples" {
   schema = schema.public
   column "id" {
@@ -349,8 +364,18 @@ table "casesets" {
     null = false
     type = timestamptz
   }
+  column "revision_id" {
+    null = false
+    type = text
+  }
   primary_key {
     columns = [column.id]
+  }
+  foreign_key "spreadsheet_revision_id" {
+    columns = [column.revision_id]
+    ref_columns = [table.google_sheet_revisions.column.id]
+    on_update = CASCADE
+    on_delete = CASCADE
   }
 }
 table "rating_labels" {
