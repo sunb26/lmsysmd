@@ -50,6 +50,7 @@ table "case_labels" {
 }
 table "cases" {
   schema = schema.public
+  comment = "A case is a single row in the google sheet. It consists of the data needed to produce one sample."
   column "id" {
     null = false
     type = serial
@@ -85,6 +86,7 @@ table "cases" {
 }
 table "casesets" {
   schema = schema.public
+  comment = "A caseset consists of multiple cases where the cases are identical other than the input content (e.g History, Findings, History and Findings)"
   column "id" {
     null = false
     type = serial
