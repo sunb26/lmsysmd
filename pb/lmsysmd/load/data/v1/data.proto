@@ -52,22 +52,15 @@ message Data {
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 128
   ];
-  string prompt = 6 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 2,
-    (buf.validate.field).string.max_len = 512
-  ];
-  enum CaseInputType {
-    CASE_INPUT_TYPE_UNSPECIFIED = 0;
-    CASE_INPUT_TYPE_HISTORY = 1;
-    CASE_INPUT_TYPE_FINDINGS = 2;
-    CASE_INPUT_TYPE_HISTORY_AND_FINDINGS = 3;
+  enum Prompt {
+    PROMPT_UNSPECIFIED = 0;
+    PROMPT_DIFFERENTIAL_DIAGNOSIS_TOP_5_RANKED_LIST = 1;
   }
-  CaseInputType case_input_type = 7 [
+  Prompt prompt = 6 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  string case_input_content = 8 [
+  string case_input_content = 7 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 8192
@@ -76,11 +69,11 @@ message Data {
     CASE_INSTRUCTION_UNSPECIFIED = 0;
     CASE_INSTRUCTION_DIFFERENTIAL_DIAGNOSIS = 1;
   }
-  CaseInstruction case_instruction = 9 [
+  CaseInstruction case_instruction = 8 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  repeated string results = 10 [
+  repeated string results = 9 [
     (buf.validate.field).required = true,
     (buf.validate.field).repeated.min_items = 5,
     (buf.validate.field).repeated.max_items = 5,
@@ -88,10 +81,13 @@ message Data {
     (buf.validate.field).repeated.items.string.max_len = 256
   ];
   // TODO(sunb26): Add labels once the labels are finalized.
-  enum DataLabel {
-    DATA_LABEL_UNSPECIFIED = 0;
+  enum CaseLabel {
+    CASE_LABEL_UNSPECIFIED = 0;
+    CASE_LABEL_HISTORY = 1;
+    CASE_LABEL_FINDINGS = 2;
+    CASE_LABEL_HISTORY_AND_FINDINGS = 3;
   }
-  repeated DataLabel data_labels = 11 [
+  repeated CaseLabel case_labels = 10 [
     (buf.validate.field).repeated.max_items = 5,
     (buf.validate.field).repeated.items.enum.defined_only = true
   ];
