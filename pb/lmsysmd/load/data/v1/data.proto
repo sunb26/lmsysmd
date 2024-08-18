@@ -42,12 +42,12 @@ message Data {
     CASE_CATEGORY_OBSTETRIC = 9;
     CASE_CATEGORY_PEDIATRIC = 10;
   }
-  CaseCategory case_category = 3 [
+  CaseCategory case_category = 2 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  uint32 caseset_id = 4 [(buf.validate.field).required = true];
-  string ground_truth = 5 [
+  uint32 caseset_id = 3 [(buf.validate.field).required = true];
+  string ground_truth = 4 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 128
@@ -56,9 +56,14 @@ message Data {
     PROMPT_UNSPECIFIED = 0;
     PROMPT_DIFFERENTIAL_DIAGNOSIS_TOP_5_RANKED_LIST = 1;
   }
-  Prompt prompt = 6 [
+  Prompt prompt = 5 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
+  ];
+  string prompt_content = 6 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 2,
+    (buf.validate.field).string.max_len = 512
   ];
   string case_input_content = 7 [
     (buf.validate.field).required = true,
