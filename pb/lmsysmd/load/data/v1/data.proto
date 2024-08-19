@@ -42,12 +42,12 @@ message Data {
     CASE_CATEGORY_OBSTETRIC = 9;
     CASE_CATEGORY_PEDIATRIC = 10;
   }
-  CaseCategory case_category = 2 [
+  CaseCategory case_category = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  uint32 caseset_id = 3 [(buf.validate.field).required = true];
-  string ground_truth = 4 [
+  uint32 caseset_id = 4 [(buf.validate.field).required = true];
+  string ground_truth = 5 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 128
@@ -56,16 +56,16 @@ message Data {
     PROMPT_UNSPECIFIED = 0;
     PROMPT_DIFFERENTIAL_DIAGNOSIS_TOP_5_RANKED_LIST = 1;
   }
-  Prompt prompt = 5 [
+  Prompt prompt = 6 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  string prompt_content = 6 [
+  string prompt_content = 7 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 512
   ];
-  string case_input_content = 7 [
+  string case_input_content = 8 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 2,
     (buf.validate.field).string.max_len = 8192
@@ -74,11 +74,11 @@ message Data {
     CASE_INSTRUCTION_UNSPECIFIED = 0;
     CASE_INSTRUCTION_DIFFERENTIAL_DIAGNOSIS = 1;
   }
-  CaseInstruction case_instruction = 8 [
+  CaseInstruction case_instruction = 9 [
     (buf.validate.field).required = true,
     (buf.validate.field).enum.defined_only = true
   ];
-  repeated string results = 9 [
+  repeated string results = 10 [
     (buf.validate.field).required = true,
     (buf.validate.field).repeated.min_items = 5,
     (buf.validate.field).repeated.max_items = 5,
@@ -92,7 +92,7 @@ message Data {
     CASE_LABEL_FINDINGS = 2;
     CASE_LABEL_HISTORY_AND_FINDINGS = 3;
   }
-  repeated CaseLabel case_labels = 10 [
+  repeated CaseLabel case_labels = 11 [
     (buf.validate.field).repeated.max_items = 5,
     (buf.validate.field).repeated.items.enum.defined_only = true
   ];
